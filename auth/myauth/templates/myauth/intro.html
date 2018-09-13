@@ -1,0 +1,78 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+    <meta charset="UTF-8"
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>姜戈留言板</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+<body>
+
+    <nav class="navbar navbar-fixed-top navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="{% url 'myauth:home' %}">姜戈留言板</a>
+      <button onclick="showHide()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'myauth:home' %}">主页<span class="sr-only">(current)</span></a>
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'myauth:user_center' %}">个人中心</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'myauth:log_out' %}">登出</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link disabled" href="{% url 'myauth:log_in' %}">登录</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="{% url 'myauth:register' %}">注册</a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link disabled" href="{% url 'myauth:intro' %}">关于本站</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div style="max-width: 600px;background: rgb(248, 249, 250);padding: 50px;margin-top: 30px;" class="container">
+        <h5>这是一个轻量级的留言板，在这里，你可以：</h5>
+        <ul>
+            <li>登录和注册</li>
+            <li>编辑个人信息和修改密码</li>
+            <li>发布和删除留言</li>
+            <li>点赞</li>
+        </ul>
+        <br>
+        <h5>未来我们还将实现：</h5>
+        <ul>
+            <li>评论与回复</li>
+            <li>头像</li>
+            <li>社交账号关联登录</li>
+        </ul>
+        <br>
+        <h5>敬请期待！<a href="{% url 'myauth:home' %}">返回首页</a></h5>
+    </div>
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script type="text/javascript">
+    var hasShow = false;
+    function showHide() {
+        console.log("1");
+        if (hasShow) {
+            $('#navbarNav').hide();
+            hasShow = false;
+        }
+        else{
+            $('#navbarNav').show();
+            hasShow = true;
+        }
+    }
+</script>
+</html>

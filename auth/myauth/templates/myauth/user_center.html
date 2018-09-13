@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>用户中心</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.css" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="{% url 'myauth:home' %}">姜戈留言板</a>
+      <button onclick="showHide()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'myauth:home' %}">主页<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'myauth:user_center' %}">个人中心</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'myauth:user_edit' %}">编辑个人信息</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'myauth:password_edit' %}">修改密码</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'myauth:log_out' %}">登出</a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link disabled" href="{% url 'myauth:intro' %}">关于本站</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div style="max-width: 600px" class="container">
+        <div class="list-group">
+        <h2>我的信息</h2>
+          <button type="button" class="list-group-item list-group-item-action">用户名：{{ user.username }}</button>
+          <button type="button" class="list-group-item list-group-item-action">昵称：{{ user.normal_user_form.nickname }}</button>
+          <button type="button" class="list-group-item list-group-item-action">生日：{{ user.normal_user_form.birthday }}</button>
+          <button type="button" class="list-group-item list-group-item-action">邮箱：{{ user.email }}</button>
+          <button type="button" class="list-group-item list-group-item-action">电话号码：{{ user.normal_user_form.phonenumber }}</button>
+        </div>
+        <a class="mt-3 btn btn-secondary btn-block" href="{% url 'myauth:user_edit' %}">编辑个人信息</a>
+
+        <div class="mt-5 list-group">
+            <h2>我的留言</h2>
+            {% for item in mesages %}
+                {% if item.author.username == user.username %}
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ item.author.normal_user_form.nickname }}</h5>
+                        <small>{{ item.created_time }}</small>
+                        </div>
+                        <p class="mb-1">{{item.content}}</p>
+                        <div class="d-flex w-100 justify-content-between">
+                            <small>{{ item.approval }} <i class="fa fa-thumbs-up"></i></small>
+                            <small>
+                                <form class="" action="{% url 'myauth:delete' item.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" style="border: none;background: none;" class="text-danger" name="button">删除</button>
+                            </form>
+                            </small>
+                        </div>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script type="text/javascript">
+    $(".alert:empty").hide();
+    var hasShow = false;
+    function showHide() {
+        console.log("1");
+        if (hasShow) {
+            $('#navbarNav').hide();
+            hasShow = false;
+        }
+        else{
+            $('#navbarNav').show();
+            hasShow = true;
+        }
+    }
+</script>
+</html>
